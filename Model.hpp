@@ -3,6 +3,7 @@
 
 #include<SFML/Graphics.hpp>
 #include<vector>
+#include<numbers>
 
 #include"Type.hpp"
 
@@ -10,8 +11,10 @@ class Button;
 
 struct Shape_in_VertexArray{
 	size_t begin, end;
-	float radius;
-	Shape_in_VertexArray(size_t begin, size_t end ,float radius) noexcept: begin(begin), end(end) , radius(radius){}
+	sf::Vector2f pos;
+	float radius , angle;
+	Shape_in_VertexArray(size_t begin, size_t end  , float radius ,sf::Vector2f pos, float angle = 0) noexcept:
+		begin(begin), radius(radius), end(end), pos(pos), angle(angle) {}
 };
 
 class Model{
@@ -19,16 +22,21 @@ class Model{
 	std::vector<Shape_in_VertexArray> shapes;
 	size_t count_vertex;
 	int inex_zahvat_shape;
+	int pointer_index_shape;
 	sf::Vector2f mouse_delta_pos;
+
+	float p_2 = float(std::numbers::pi) * 2.f;
+	float to_radian = p_2 / 360.f;
 public:
 	
 	Model() noexcept {
 		model.setPrimitiveType(sf::Triangles); count_vertex = 0;
-		inex_zahvat_shape = -1; mouse_delta_pos = { 0.f,0.f }; };
+		inex_zahvat_shape = -1; pointer_index_shape =-1; mouse_delta_pos = { 0.f,0.f };
+	};
 
 	void draw(sf::RenderWindow& window);
 
-	void Add(sf::Vector2f point , float size_shape = 60.f, int facets = 3, float angle = 0.f);
+	void Add(sf::Vector2f point, float size_shape, size_t facets = 3, float angle = 0);
 
 	void Delete(size_t index);
 
@@ -36,11 +44,17 @@ public:
 
 	void move_1_shape(Shape_in_VertexArray& zahvat_shape, sf::Vector2f vec);
 
-	bool pointInPolygon(sf::Vector2f point, rsize_t index);
+	void setRotation_shape(size_t index , float angle);
 
-	void update(std::vector<Button*> buttons, sf::Vector2f mouse_pos, bool lkm, int poligon = 6);
+	bool pointInPolygon(sf::Vector2f point, size_t index);
+
+	void update(std::vector<Button*> buttons, sf::Vector2f mouse_pos, bool lkm, size_t poligon = 6 , float angle = 0.f);
 
 	int get_shape_count() { return int(shapes.size()); }
+
+	int get_zahvat_index() { return pointer_index_shape; }
+
+	float get_angle_zahvat_index() { return shapes[pointer_index_shape].angle; }
 
 	void set_shape_color(size_t index, sf::Color color);
 

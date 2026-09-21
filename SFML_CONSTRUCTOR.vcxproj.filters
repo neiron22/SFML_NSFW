@@ -63,7 +63,7 @@
     <ClCompile Include="Counter.cpp">
       <Filter>Indicator\Counter</Filter>
     </ClCompile>
-    <ClCompile Include="Color_indikator.cpp">
+    <ClCompile Include="slider.cpp">
       <Filter>Indicator\Color</Filter>
     </ClCompile>
     <ClCompile Include="button_shape.cpp">
@@ -89,7 +89,7 @@
     <ClInclude Include="Counter.hpp">
       <Filter>Indicator\Counter</Filter>
     </ClInclude>
-    <ClInclude Include="Color_indikator.hpp">
+    <ClInclude Include="slider.hpp">
       <Filter>Indicator\Color</Filter>
     </ClInclude>
     <ClInclude Include="button_shape.hpp">

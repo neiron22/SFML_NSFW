@@ -10,7 +10,7 @@
 #include"Model.hpp"
 #include"Counter.hpp"
 
-#include"Color_indikator.hpp"
+#include"slider.hpp"
 
 class Constructor{
 	bool mouse_clic_left = sf::Mouse::isButtonPressed(sf::Mouse::Left);
@@ -24,10 +24,12 @@ class Constructor{
 	std::vector<Button*> buttons;
 
 	Model model;
-	Counter shape_Counter , poligon_Counter;
+	Counter shape_Counter  , pointer_hsape , poligon_Counter;
 
 
 	Color_indikator color_indocator;
+	One_slider slider_1;
+	Counter silder_counter;
 public:
 
 	Constructor();

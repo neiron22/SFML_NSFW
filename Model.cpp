@@ -7,23 +7,24 @@ void Model::draw(sf::RenderWindow & window) {
 	window.draw(model);
 }
 
-void Model::Add(sf::Vector2f point, float size_shape, int facets, float angle) {
+void Model::Add(sf::Vector2f point, float size_shape, size_t facets, float angle) {
 	//if (size_shape == 0.f) { model.append(sf::Vertex{ point }); return; }
-
-	float p_2 = 3.14159f * 2.f;
+	angle *= to_radian;
 	for (int i = 0; i < facets; i++) {
 		float angle_1 = angle + (p_2 * i / facets);
 		float angle_2 = angle + (p_2 * (i + 1) / facets); 
 
-		sf::Vector2f pos_1 = point + sf::Vector2f{ cosf(angle_1) , sinf(angle_1) } *size_shape;
-		sf::Vector2f pos_2 = point + sf::Vector2f{ cosf(angle_2) , sinf(angle_2) } *size_shape;
+		sf::Vector2f pos_1 = point + sf::Vector2f{ sinf(angle_1) , cosf(angle_1) } *size_shape;
+		sf::Vector2f pos_2 = point + sf::Vector2f{ sinf(angle_2) , cosf(angle_2) } *size_shape;
 
 		model.append(sf::Vertex{ point });
 		model.append(sf::Vertex{ pos_1 });
 		model.append(sf::Vertex{ pos_2 });
+
 	}
 	facets *= 3;
-	shapes.push_back({ count_vertex , count_vertex + facets , size_shape });
+	shapes.push_back({ count_vertex , count_vertex + facets ,size_shape,  point , angle });
+
 	count_vertex += facets;
 }
 
@@ -34,7 +35,7 @@ void Model::Delete(size_t index){
 	size_t end = shapes[index].end;
 	int delta = int(end - begin);
 
-	if (end == count_vertex) { // этот случай выполняется ТОЛЬКО если элемет послкдний
+	if (end == count_vertex) { // этот случай выполняется ТОЛЬКО если элемет послeдний
 		model.resize(count_vertex - delta);
 		shapes.pop_back();
 		count_vertex -= delta;
@@ -72,12 +73,31 @@ void Model::Delete() {
 
 
 void Model::move_1_shape(Shape_in_VertexArray& zahvat_shape, sf::Vector2f vec) {
-	for (int i = zahvat_shape.begin; i < zahvat_shape.end; i++) {
+	for (size_t i = zahvat_shape.begin; i < zahvat_shape.end; i++) {
 		model[i].position += vec;
 	}
+	zahvat_shape.pos += vec;
 }
 
-bool Model::pointInPolygon(sf::Vector2f point, rsize_t index) {
+void Model::setRotation_shape(size_t index, float angle){
+	if (index >= shapes.size()) return;
+
+		auto& shape = shapes[index];
+		sf::Vector2f center = shape.pos;
+
+		sf::Transform transform;
+		transform.translate(center);
+		transform.rotate(angle - shape.angle);
+		transform.translate(-center);
+
+		shape.angle = angle;
+
+		for (size_t i = shape.begin; i < shape.end; i++) {
+			model[i].position = transform.transformPoint(model[i].position);
+		}
+}
+
+bool Model::pointInPolygon(sf::Vector2f point, size_t index) {
 
 	sf::Vector2f center = model[shapes[index].begin].position;
 	float radius = shapes[index].radius;
@@ -88,13 +108,16 @@ bool Model::pointInPolygon(sf::Vector2f point, rsize_t index) {
 	return false;
 }
 
-void Model::update(std::vector<Button*> buttons , sf::Vector2f mouse_pos,  bool lkm , int poligon){
+void Model::update(std::vector<Button*> buttons , sf::Vector2f mouse_pos,  bool lkm , size_t poligon , float angle){
 	sf::Vector2f pos = { 450.f,350.f };
+
+	setRotation_shape(pointer_index_shape, angle);
+
 	for (auto& it : buttons) {
 		if (it->getClick()){
 			switch (it->getType()){
 			case ButtonType::add_vertex_Triangles:
-				Add(pos , 30.f , poligon);
+				Add(pos , 30.f , poligon , 0.f);
 				break;
 			case ButtonType::deleted_shape:
 				Delete();
@@ -106,6 +129,7 @@ void Model::update(std::vector<Button*> buttons , sf::Vector2f mouse_pos,  bool 
 
 	if (inex_zahvat_shape != -1 && lkm) {
 		move_1_shape(shapes[inex_zahvat_shape], mouse_pos - (model[shapes[inex_zahvat_shape].begin].position + mouse_delta_pos));
+
 		return;
 	}
 	else
@@ -118,6 +142,7 @@ void Model::update(std::vector<Button*> buttons , sf::Vector2f mouse_pos,  bool 
 		if ((pointInPolygon(mouse_pos, i) && lkm))
 		{
 			inex_zahvat_shape = i;
+			pointer_index_shape = i;
 			mouse_delta_pos = mouse_pos - model[shapes[inex_zahvat_shape].begin].position;
 		}
 	}

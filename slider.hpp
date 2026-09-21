@@ -13,8 +13,8 @@
 	rect.setOutlineColor({50,50,50});
 	return rect;}
 
-	inline sf::RectangleShape get_big_rect() {
-		float size = 255.f, width = 17.f,
+	inline sf::RectangleShape get_big_rect(float size = 255.f) {
+		float width = 17.f,
 		out_size = 3.f;
 		sf::RectangleShape rect;
 		rect.setSize({ size ,width });
@@ -54,11 +54,24 @@
 			float point;
 	public:
 		Color_indikator(sf::Vector2f vec);
-
-
+		
 		void update(sf::Vector2f mouse_pos , bool LKM);
 
 		void draw(sf::RenderWindow & window);
 	
 	};
 
+	class One_slider {
+		sf::RectangleShape rect, RECT;
+		sf::RectangleShape* zahvat_rect;
+		float point_begin , point_end;
+		int pointer_shape;
+	public:
+		One_slider(sf::Vector2f pos);
+
+		void update(sf::Vector2f mouse_pos,  bool mouse_click , int pointer_shape , float angle_shape);
+
+		void draw(sf::RenderWindow & window);
+
+		float getSilverLevel();
+	};

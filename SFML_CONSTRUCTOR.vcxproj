@@ -139,7 +139,7 @@
   <ItemGroup>
     <ClCompile Include="Button.cpp" />
     <ClCompile Include="button_shape.cpp" />
-    <ClCompile Include="Color_indikator.cpp" />
+    <ClCompile Include="slider.cpp" />
     <ClCompile Include="Constructor.cpp" />
     <ClCompile Include="Counter.cpp" />
     <ClCompile Include="file.cpp" />
@@ -150,7 +150,7 @@
   <ItemGroup>
     <ClInclude Include="Button.hpp" />
     <ClInclude Include="button_shape.hpp" />
-    <ClInclude Include="Color_indikator.hpp" />
+    <ClInclude Include="slider.hpp" />
     <ClInclude Include="Constructor.hpp" />
     <ClInclude Include="Counter.hpp" />
     <ClInclude Include="FontManager.hpp" />

@@ -1,5 +1,8 @@
 //Color_indikator.cpp
-#include "Color_indikator.hpp"
+#include "slider.hpp"
+
+//--------------
+
 
 Color_indikator::Color_indikator(sf::Vector2f vec) :
 	colorscale(vec) { point = vec.x;
@@ -56,4 +59,44 @@ void Color_indikator::draw(sf::RenderWindow& window) {
 
 	window.draw(color_rect);
 	
+}
+
+
+One_slider::One_slider(sf::Vector2f pos):point_begin(pos.x), zahvat_rect(nullptr) , pointer_shape(0) {
+	rect = get_smal_rect();
+	RECT = get_big_rect(360.f);
+
+	RECT.setPosition(pos);
+	rect.setPosition(pos.x, pos.y + (RECT.getSize().y + RECT.getOutlineThickness()) * 0.5f);
+
+	point_end = point_begin + RECT.getSize().x;
+}
+
+
+void One_slider::draw(sf::RenderWindow& window) {
+	window.draw(RECT);
+	window.draw(rect);}
+
+float One_slider::getSilverLevel(){
+	float pos = rect.getPosition().x;
+	return (point_begin - pos)/(point_begin - point_end);
+}
+
+void One_slider::update(sf::Vector2f mouse_pos, bool LKM, int pointer_shape, float angle_shape) {
+	sf::Vector2f rect_pos = rect.getPosition();
+	sf::Vector2f rect_size = rect.getSize();
+
+	if (this->pointer_shape != pointer_shape) { rect.setPosition({point_begin+angle_shape , rect_pos.y}); }
+	this->pointer_shape = pointer_shape;
+
+	if (zahvat_rect != nullptr && LKM) {
+	zahvat_rect->setPosition({ std::clamp(mouse_pos.x , point_begin,point_end) ,rect.getPosition().y });
+	}
+	else { zahvat_rect = nullptr; }
+	
+
+	if (mouse_click(rect_pos, mouse_pos, rect_size, LKM)) {
+		zahvat_rect = &rect;
+	}
+
 }
