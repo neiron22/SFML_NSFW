@@ -1,33 +1,33 @@
 #include<SFML\Graphics.hpp>
 
 #include <iostream>
-#include<thread>
-#include<string>
+//#include<thread>
+//#include<string>
 
 
-#include<fstream>
+//#include<fstream>
 
 #include"Constructor.hpp"
 
 
 #include"FontManager.hpp"
 
-std::string CONSOLE_INPUT;
+//std::string CONSOLE_INPUT;
 bool hasInput = false;
 
-void inputThread() {
-	while (true) {
-		//hasInput = false;
-		std::string input;
-		std::getline(std::cin , input);
-		CONSOLE_INPUT = input;
-		hasInput = true;
-	}
-}
+//void inputThread() {
+//	while (true) {
+//		//hasInput = false;
+//		std::string input;
+//		std::getline(std::cin , input);
+//		CONSOLE_INPUT = input;
+//		hasInput = true;
+//	}
+//}
 
 int main() {
-	std::thread t(inputThread);
-	t.detach();
+	//std::thread t(inputThread);
+	//t.detach();
 
 	FontManager::init();
 
@@ -63,14 +63,14 @@ int main() {
 
 	
 
-	if (hasInput) {
-		float float_input = std::stof(CONSOLE_INPUT);
+	//if (hasInput) {
+	//	float float_input = std::stof(CONSOLE_INPUT);
 
 
 	
 	
 
-	hasInput = false;}
+	//hasInput = false;}
 	
 
 	constructor.update(mouse_pos, delta_time);

@@ -52,12 +52,17 @@
 		sf::RectangleShape color_rect;
 		sf::RectangleShape* zahvat_rect;
 			float point;
+			int pointer_shape;
+
+			sf::Color color;
 	public:
 		Color_indikator(sf::Vector2f vec);
 		
-		void update(sf::Vector2f mouse_pos , bool LKM);
+		void update(sf::Vector2f mouse_pos , bool LKM , int poiner_shape , sf::Color color_shape);
 
 		void draw(sf::RenderWindow & window);
+
+		sf::Color getColor() { return color; }
 	
 	};
 
@@ -72,6 +77,8 @@
 		void update(sf::Vector2f mouse_pos,  bool mouse_click , int pointer_shape , float angle_shape);
 
 		void draw(sf::RenderWindow & window);
+
+		bool is_zahvat() { return zahvat_rect != nullptr; }
 
 		float getSilverLevel();
 	};

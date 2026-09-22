@@ -13,8 +13,9 @@ struct Shape_in_VertexArray{
 	size_t begin, end;
 	sf::Vector2f pos;
 	float radius , angle;
+	sf::Color color;
 	Shape_in_VertexArray(size_t begin, size_t end  , float radius ,sf::Vector2f pos, float angle = 0) noexcept:
-		begin(begin), radius(radius), end(end), pos(pos), angle(angle) {}
+		begin(begin), radius(radius), end(end), pos(pos), angle(angle), color(sf::Color::White) {}
 };
 
 class Model{
@@ -36,7 +37,7 @@ public:
 
 	void draw(sf::RenderWindow& window);
 
-	void Add(sf::Vector2f point, float size_shape, size_t facets = 3, float angle = 0);
+	void Add(sf::Vector2f point, float size_shape, size_t facets = 3, float angle = 0 );
 
 	void Delete(size_t index);
 
@@ -48,13 +49,15 @@ public:
 
 	bool pointInPolygon(sf::Vector2f point, size_t index);
 
-	void update(std::vector<Button*> buttons, sf::Vector2f mouse_pos, bool lkm, size_t poligon = 6 , float angle = 0.f);
+	void update(std::vector<Button*> buttons, sf::Vector2f mouse_pos, bool lkm, size_t poligon = 6 , float angle = 0.f , sf::Color color = sf::Color::White, bool flag = true);
 
 	int get_shape_count() { return int(shapes.size()); }
 
 	int get_zahvat_index() { return pointer_index_shape; }
 
 	float get_angle_zahvat_index() { return shapes[pointer_index_shape].angle; }
+
+	sf::Color get_ColorShape(){return shapes[pointer_index_shape].color;}
 
 	void set_shape_color(size_t index, sf::Color color);
 

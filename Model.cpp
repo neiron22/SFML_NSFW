@@ -108,10 +108,11 @@ bool Model::pointInPolygon(sf::Vector2f point, size_t index) {
 	return false;
 }
 
-void Model::update(std::vector<Button*> buttons , sf::Vector2f mouse_pos,  bool lkm , size_t poligon , float angle){
+void Model::update(std::vector<Button*> buttons , sf::Vector2f mouse_pos,  bool lkm , size_t poligon , float angle, sf::Color color, bool flag){
 	sf::Vector2f pos = { 450.f,350.f };
 
 	setRotation_shape(pointer_index_shape, angle);
+	set_shape_color(pointer_index_shape , color);
 
 	for (auto& it : buttons) {
 		if (it->getClick()){
@@ -127,7 +128,7 @@ void Model::update(std::vector<Button*> buttons , sf::Vector2f mouse_pos,  bool 
 	}
 
 
-	if (inex_zahvat_shape != -1 && lkm) {
+	if (inex_zahvat_shape != -1 && lkm ) {
 		move_1_shape(shapes[inex_zahvat_shape], mouse_pos - (model[shapes[inex_zahvat_shape].begin].position + mouse_delta_pos));
 
 		return;
@@ -139,7 +140,7 @@ void Model::update(std::vector<Button*> buttons , sf::Vector2f mouse_pos,  bool 
 
 	for (int i = 0; i < int(shapes.size()); i++) {
 
-		if ((pointInPolygon(mouse_pos, i) && lkm))
+		if ((pointInPolygon(mouse_pos, i) && lkm) && flag)
 		{
 			inex_zahvat_shape = i;
 			pointer_index_shape = i;
@@ -149,12 +150,15 @@ void Model::update(std::vector<Button*> buttons , sf::Vector2f mouse_pos,  bool 
 }
 
 void Model::set_shape_color(size_t index, sf::Color color){
+	if (index >= shapes.size()) { return; }
 	size_t start = shapes[index].begin;
 	size_t end = shapes[index].end;
 
 	for (rsize_t it = start; it < end; it++) {
 		model[it].color = color;
 	}
+
+	shapes[index].color = color;
 }
 
 void Model::set_point_color(size_t index_point, sf::Color color){

@@ -24,10 +24,10 @@ class Constructor{
 	std::vector<Button*> buttons;
 
 	Model model;
-	Counter shape_Counter  , pointer_hsape , poligon_Counter;
+	Counter shape_Counter  , pointer_hsape_Counter , poligon_Counter;
 
 
-	Color_indikator color_indocator;
+	Color_indikator color_indicator;
 	One_slider slider_1;
 	Counter silder_counter;
 public:
